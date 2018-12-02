@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="arabic.c" />
+    <ClCompile Include="beval.c" />
+    <ClCompile Include="blowfish.c" />
+    <ClCompile Include="buffer.c" />
+    <ClCompile Include="channel.c" />
+    <ClCompile Include="charset.c" />
+    <ClCompile Include="crypt.c" />
+    <ClCompile Include="crypt_zip.c" />
+    <ClCompile Include="dict.c" />
+    <ClCompile Include="diff.c" />
+    <ClCompile Include="digraph.c" />
+    <ClCompile Include="edit.c" />
+    <ClCompile Include="eval.c" />
+    <ClCompile Include="evalfunc.c" />
+    <ClCompile Include="ex_cmds.c" />
+    <ClCompile Include="ex_cmds2.c" />
+    <ClCompile Include="ex_docmd.c" />
+    <ClCompile Include="ex_eval.c" />
+    <ClCompile Include="ex_getln.c" />
+    <ClCompile Include="farsi.c" />
+    <ClCompile Include="fileio.c" />
+    <ClCompile Include="fold.c" />
+    <ClCompile Include="getchar.c" />
+    <ClCompile Include="hardcopy.c" />
+    <ClCompile Include="hashtab.c" />
+    <ClCompile Include="if_cscope.c" />
+    <ClCompile Include="iscygpty.c" />
+    <ClCompile Include="json.c" />
+    <ClCompile Include="list.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="mark.c" />
+    <ClCompile Include="mbyte.c" />
+    <ClCompile Include="memfile.c" />
+    <ClCompile Include="memline.c" />
+    <ClCompile Include="menu.c" />
+    <ClCompile Include="message.c" />
+    <ClCompile Include="misc1.c" />
+    <ClCompile Include="misc2.c" />
+    <ClCompile Include="move.c" />
+    <ClCompile Include="normal.c" />
+    <ClCompile Include="ops.c" />
+    <ClCompile Include="option.c" />
+    <ClCompile Include="os_mswin.c" />
+    <ClCompile Include="os_win32.c" />
+    <ClCompile Include="pathdef.c" />
+    <ClCompile Include="popupmnu.c" />
+    <ClCompile Include="quickfix.c" />
+    <ClCompile Include="regexp.c" />
+    <ClCompile Include="screen.c" />
+    <ClCompile Include="search.c" />
+    <ClCompile Include="sha256.c" />
+    <ClCompile Include="spell.c" />
+    <ClCompile Include="spellfile.c" />
+    <ClCompile Include="syntax.c" />
+    <ClCompile Include="tag.c" />
+    <ClCompile Include="term.c" />
+    <ClCompile Include="terminal.c" />
+    <ClCompile Include="ui.c" />
+    <ClCompile Include="undo.c" />
+    <ClCompile Include="userfunc.c" />
+    <ClCompile Include="version.c" />
+    <ClCompile Include="winclip.c" />
+    <ClCompile Include="window.c" />
+    <ClCompile Include="xdiff\xdiffi.c" />
+    <ClCompile Include="xdiff\xemit.c" />
+    <ClCompile Include="xdiff\xhistogram.c" />
+    <ClCompile Include="xdiff\xpatience.c" />
+    <ClCompile Include="xdiff\xprepare.c" />
+    <ClCompile Include="xdiff\xutils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alloc.h" />
+    <ClInclude Include="arabic.h" />
+    <ClInclude Include="ascii.h" />
+    <ClInclude Include="beval.h" />
+    <ClInclude Include="ex_cmdidxs.h" />
+    <ClInclude Include="ex_cmds.h" />
+    <ClInclude Include="farsi.h" />
+    <ClInclude Include="feature.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="iscygpty.h" />
+    <ClInclude Include="keymap.h" />
+    <ClInclude Include="macros.h" />
+    <ClInclude Include="option.h" />
+    <ClInclude Include="os_dos.h" />
+    <ClInclude Include="os_win32.h" />
+    <ClInclude Include="proto.h" />
+    <ClInclude Include="protodef.h" />
+    <ClInclude Include="regexp.h" />
+    <ClInclude Include="spell.h" />
+    <ClInclude Include="structs.h" />
+    <ClInclude Include="term.h" />
+    <ClInclude Include="version.h" />
+    <ClInclude Include="vim.h" />
+    <ClInclude Include="vimio.h" />
+    <ClInclude Include="xdiff\xdiff.h" />
+    <ClInclude Include="xdiff\xdiffi.h" />
+    <ClInclude Include="xdiff\xemit.h" />
+    <ClInclude Include="xdiff\xinclude.h" />
+    <ClInclude Include="xdiff\xmacros.h" />
+    <ClInclude Include="xdiff\xprepare.h" />
+    <ClInclude Include="xdiff\xtypes.h" />
+    <ClInclude Include="xdiff\xutils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="proto\arabic.pro" />
+    <None Include="proto\beval.pro" />
+    <None Include="proto\blowfish.pro" />
+    <None Include="proto\buffer.pro" />
+    <None Include="proto\channel.pro" />
+    <None Include="proto\charset.pro" />
+    <None Include="proto\crypt.pro" />
+    <None Include="proto\crypt_zip.pro" />
+    <None Include="proto\dict.pro" />
+    <None Include="proto\diff.pro" />
+    <None Include="proto\digraph.pro" />
+    <None Include="proto\edit.pro" />
+    <None Include="proto\eval.pro" />
+    <None Include="proto\evalfunc.pro" />
+    <None Include="proto\ex_cmds.pro" />
+    <None Include="proto\ex_cmds2.pro" />
+    <None Include="proto\ex_docmd.pro" />
+    <None Include="proto\ex_eval.pro" />
+    <None Include="proto\ex_getln.pro" />
+    <None Include="proto\farsi.pro" />
+    <None Include="proto\fileio.pro" />
+    <None Include="proto\fold.pro" />
+    <None Include="proto\getchar.pro" />
+    <None Include="proto\gui.pro" />
+    <None Include="proto\gui_athena.pro" />
+    <None Include="proto\gui_beval.pro" />
+    <None Include="proto\gui_gtk.pro" />
+    <None Include="proto\gui_gtk_gresources.pro" />
+    <None Include="proto\gui_gtk_x11.pro" />
+    <None Include="proto\gui_mac.pro" />
+    <None Include="proto\gui_motif.pro" />
+    <None Include="proto\gui_photon.pro" />
+    <None Include="proto\gui_w32.pro" />
+    <None Include="proto\gui_x11.pro" />
+    <None Include="proto\gui_xmdlg.pro" />
+    <None Include="proto\hangulin.pro" />
+    <None Include="proto\hardcopy.pro" />
+    <None Include="proto\hashtab.pro" />
+    <None Include="proto\if_cscope.pro" />
+    <None Include="proto\if_lua.pro" />
+    <None Include="proto\if_mzsch.pro" />
+    <None Include="proto\if_ole.pro" />
+    <None Include="proto\if_perl.pro" />
+    <None Include="proto\if_perlsfio.pro" />
+    <None Include="proto\if_python.pro" />
+    <None Include="proto\if_python3.pro" />
+    <None Include="proto\if_ruby.pro" />
+    <None Include="proto\if_tcl.pro" />
+    <None Include="proto\if_xcmdsrv.pro" />
+    <None Include="proto\json.pro" />
+    <None Include="proto\list.pro" />
+    <None Include="proto\main.pro" />
+    <None Include="proto\mark.pro" />
+    <None Include="proto\mbyte.pro" />
+    <None Include="proto\memfile.pro" />
+    <None Include="proto\memline.pro" />
+    <None Include="proto\menu.pro" />
+    <None Include="proto\message.pro" />
+    <None Include="proto\misc1.pro" />
+    <None Include="proto\misc2.pro" />
+    <None Include="proto\move.pro" />
+    <None Include="proto\netbeans.pro" />
+    <None Include="proto\normal.pro" />
+    <None Include="proto\ops.pro" />
+    <None Include="proto\option.pro" />
+    <None Include="proto\os_amiga.pro" />
+    <None Include="proto\os_beos.pro" />
+    <None Include="proto\os_mac_conv.pro" />
+    <None Include="proto\os_mswin.pro" />
+    <None Include="proto\os_qnx.pro" />
+    <None Include="proto\os_unix.pro" />
+    <None Include="proto\os_vms.pro" />
+    <None Include="proto\os_win32.pro" />
+    <None Include="proto\popupmnu.pro" />
+    <None Include="proto\pty.pro" />
+    <None Include="proto\quickfix.pro" />
+    <None Include="proto\regexp.pro" />
+    <None Include="proto\screen.pro" />
+    <None Include="proto\search.pro" />
+    <None Include="proto\sha256.pro" />
+    <None Include="proto\spell.pro" />
+    <None Include="proto\spellfile.pro" />
+    <None Include="proto\syntax.pro" />
+    <None Include="proto\tag.pro" />
+    <None Include="proto\term.pro" />
+    <None Include="proto\terminal.pro" />
+    <None Include="proto\termlib.pro" />
+    <None Include="proto\ui.pro" />
+    <None Include="proto\undo.pro" />
+    <None Include="proto\userfunc.pro" />
+    <None Include="proto\version.pro" />
+    <None Include="proto\winclip.pro" />
+    <None Include="proto\window.pro" />
+    <None Include="proto\workshop.pro" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4964BA7C-6E05-42E5-8B2C-085F00BD2275}</ProjectGuid>
+    <RootNamespace>VisualVIMforUEFIShell</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>proto</AdditionalIncludeDirectories>
+      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link />
+    <Link>
+      <AdditionalDependencies>netapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>proto</AdditionalIncludeDirectories>
+      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>netapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
