@@ -46,7 +46,7 @@
  */
 #if !defined(FEAT_TINY) && !defined(FEAT_SMALL) && !defined(FEAT_NORMAL) \
 	&& !defined(FEAT_BIG) && !defined(FEAT_HUGE)
-/* #define FEAT_TINY */
+ #define FEAT_TINY 
 /* #define FEAT_SMALL */
 /* #define FEAT_NORMAL */
 /* #define FEAT_BIG */
@@ -315,7 +315,7 @@
  * do a EBCDIC to ASCII conversion for this??
  */
 #if !defined(EBCDIC)
-# define FEAT_TAG_BINS
+//kgtest # define FEAT_TAG_BINS
 #endif
 
 /*
@@ -348,7 +348,7 @@
 #ifdef FEAT_NORMAL
 # define FEAT_EVAL
 # if defined(HAVE_FLOAT_FUNCS) || defined(WIN3264) || defined(MACOS_X)
-#  define FEAT_FLOAT
+//kgtest#  define FEAT_FLOAT
 # endif
 # if defined(HAVE_STDINT_H) || defined(WIN3264) || (VIM_SIZEOF_LONG >= 8)
 #  define FEAT_NUM64

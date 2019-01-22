@@ -1504,7 +1504,7 @@ u_write_undo(
 #ifdef U_DEBUG
     int		headers_written = 0;
 #endif
-    int		fd;
+    FILE*		fd;
     FILE	*fp = NULL;
     int		perm;
     int		write_ok = FALSE;
@@ -1587,7 +1587,7 @@ u_write_undo(
 		int	len;
 
 		len = read_eintr(fd, mbuf, UF_START_MAGIC_LEN);
-		close(fd);
+		fclose(fd);
 		if (len < UF_START_MAGIC_LEN
 		      || memcmp(mbuf, UF_START_MAGIC, UF_START_MAGIC_LEN) != 0)
 		{
@@ -1661,7 +1661,7 @@ u_write_undo(
     if (fp == NULL)
     {
 	EMSG2(_(e_not_open), file_name);
-	close(fd);
+	fclose(fd);
 	mch_remove(file_name);
 	goto theend;
     }

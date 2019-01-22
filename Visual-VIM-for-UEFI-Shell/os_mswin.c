@@ -388,7 +388,7 @@ mch_FullName(
 	if (nResult == FAIL)	    /* fall back to non-wide function */
 #endif
 	{
-	    if (_fullpath((char *)buf, (const char *)fname, len - 1) == NULL)
+	    if (/*_fullpath((char *)buf, (const char *)fname, len - 1)kgtemp*/0 == NULL)
 	    {
 		/* failed, use relative path name */
 		vim_strncpy(buf, fname, len - 1);
@@ -534,7 +534,7 @@ stat_symlink_aware(const char *name, stat_T *stp)
 	}
     }
 #endif
-    return stat(name, stp);
+    return -1;//kgteststat(name, stp);
 }
 
 #ifdef FEAT_MBYTE
@@ -783,8 +783,8 @@ mch_chdir(char *path)
 	/* If we can change to the drive, skip that part of the path.  If we
 	 * can't then the current directory may be invalid, try using chdir()
 	 * with the whole path. */
-	if (_chdrive(TOLOWER_ASC(path[0]) - 'a' + 1) == 0)
-	    path += 2;
+//kgtemp	if (_chdrive(TOLOWER_ASC(path[0]) - 'a' + 1) == 0)
+//kgtemp	    path += 2;
     }
 
     if (*path == NUL)		/* drive name only */
@@ -805,7 +805,8 @@ mch_chdir(char *path)
     }
 #endif
 
-    return chdir(path);	       /* let the normal chdir() do the rest */
+//kgtemp    return chdir(path);	       /* let the normal chdir() do the rest */
+    return 0;//kgtemp
 }
 
 

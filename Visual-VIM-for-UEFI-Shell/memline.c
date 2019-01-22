@@ -1,3 +1,4 @@
+//#define _USE_32BIT_TIME_T
 /* vi:set ts=8 sts=4 sw=4 noet:
  *
  * VIM - Vi IMproved	by Bram Moolenaar
@@ -633,7 +634,7 @@ ml_setname(buf_T *buf)
 #endif
 
     mfp = buf->b_ml.ml_mfp;
-    if (mfp->mf_fd < 0)		    /* there is no swap file yet */
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/)		    /* there is no swap file yet */
     {
 	/*
 	 * When 'updatecount' is 0 and 'noswapfile' there is no swap file.
@@ -678,10 +679,10 @@ ml_setname(buf_T *buf)
 	    break;
 	}
 	/* need to close the swap file before renaming */
-	if (mfp->mf_fd >= 0)
+	if (mfp->mf_fd != NULL /*KGTEST >= 0*/)
 	{
-	    close(mfp->mf_fd);
-	    mfp->mf_fd = -1;
+	    fclose(mfp->mf_fd);
+	    mfp->mf_fd = NULL/*KGTEST -1*/;
 	}
 
 	/* try to rename the swap file */
@@ -702,10 +703,10 @@ ml_setname(buf_T *buf)
 	vim_free(fname);	    /* this fname didn't work, try another */
     }
 
-    if (mfp->mf_fd == -1)	    /* need to (re)open the swap file */
+    if (mfp->mf_fd == NULL /*KGTEST == -1*/)	    /* need to (re)open the swap file */
     {
 	mfp->mf_fd = mch_open((char *)mfp->mf_fname, O_RDWR | O_EXTRA, 0);
-	if (mfp->mf_fd < 0)
+	if (mfp->mf_fd == NULL /*KGTEST < 0*/)
 	{
 	    /* could not (re)open the swap file, what can we do???? */
 	    EMSG(_("E301: Oops, lost the swap file!!!"));
@@ -751,7 +752,7 @@ ml_open_file(buf_T *buf)
     char_u	*dirp;
 
     mfp = buf->b_ml.ml_mfp;
-    if (mfp == NULL || mfp->mf_fd >= 0 || !buf->b_p_swf || cmdmod.noswapfile)
+    if (mfp == NULL || mfp->mf_fd != NULL /*>= 0*/ || !buf->b_p_swf || cmdmod.noswapfile)
 	return;		/* nothing to do */
 
 #ifdef FEAT_SPELL
@@ -1218,7 +1219,7 @@ ml_recover(void)
 				    mf_open() will consume "fname_used"! */
     mfp = mf_open(fname_used, O_RDONLY);
     fname_used = p;
-    if (mfp == NULL || mfp->mf_fd < 0)
+    if (mfp == NULL || mfp->mf_fd == NULL /*KGTEST < 0*/)
     {
 	if (fname_used != NULL)
 	    EMSG2(_("E306: Cannot open %s"), fname_used);
@@ -2047,7 +2048,7 @@ static int process_still_running;
     void
 get_b0_dict(char_u *fname, dict_T *d)
 {
-    int fd;
+    FILE* fd;
     struct block0 b0;
 
     if ((fd = mch_open((char *)fname, O_RDONLY | O_EXTRA, 0)) >= 0)
@@ -2082,7 +2083,7 @@ get_b0_dict(char_u *fname, dict_T *d)
 	else
 	    dict_add_string(d, "error",
 				    vim_strsave((char_u *)"Cannot read file"));
-	close(fd);
+	fclose(fd);
     }
     else
 	dict_add_string(d, "error", vim_strsave((char_u *)"Cannot open file"));
@@ -2097,7 +2098,7 @@ get_b0_dict(char_u *fname, dict_T *d)
 swapfile_info(char_u *fname)
 {
     stat_T	    st;
-    int		    fd;
+    FILE*		    fd;
     struct block0   b0;
     time_t	    x = (time_t)0;
     char	    *p;
@@ -2198,7 +2199,7 @@ swapfile_info(char_u *fname)
 	}
 	else
 	    MSG_PUTS(_("         [cannot be read]"));
-	close(fd);
+	fclose(fd);
     }
     else
 	MSG_PUTS(_("         [cannot be opened]"));
@@ -4414,7 +4415,7 @@ findswapname(
 	    if (!recoverymode && buf_fname != NULL
 				&& !buf->b_help && !(buf->b_flags & BF_DUMMY))
 	    {
-		int		fd;
+		FILE*		fd;
 		struct block0	b0;
 		int		differ = FALSE;
 
@@ -4466,7 +4467,7 @@ findswapname(
 #endif
 			}
 		    }
-		    close(fd);
+		    fclose(fd);
 		}
 
 		/* give the ATTENTION message when there is an old swap file

@@ -66,6 +66,6 @@ int autocmd_supported(char_u *name);
 int au_exists(char_u *arg);
 int match_file_list(char_u *list, char_u *sfname, char_u *ffname);
 char_u *file_pat_to_reg_pat(char_u *pat, char_u *pat_end, char *allow_dirs, int no_bslash);
-long read_eintr(int fd, void *buf, size_t bufsize);
-long write_eintr(int fd, void *buf, size_t bufsize);
+long read_eintr(FILE* fd, void *buf, size_t bufsize);
+long write_eintr(FILE* fd, void *buf, size_t bufsize);
 /* vim: set ft=c : */

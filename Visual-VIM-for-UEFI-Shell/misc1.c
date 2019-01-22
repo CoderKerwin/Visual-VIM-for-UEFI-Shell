@@ -4644,38 +4644,38 @@ vim_unsetenv(char_u *var)
     void
 vim_setenv(char_u *name, char_u *val)
 {
-#ifdef HAVE_SETENV
-    mch_setenv((char *)name, (char *)val, 1);
-#else
-    char_u	*envbuf;
-
-    /*
-     * Putenv does not copy the string, it has to remain
-     * valid.  The allocated memory will never be freed.
-     */
-    envbuf = alloc((unsigned)(STRLEN(name) + STRLEN(val) + 2));
-    if (envbuf != NULL)
-    {
-	sprintf((char *)envbuf, "%s=%s", name, val);
-	putenv((char *)envbuf);
-    }
-#endif
-#ifdef FEAT_GETTEXT
-    /*
-     * When setting $VIMRUNTIME adjust the directory to find message
-     * translations to $VIMRUNTIME/lang.
-     */
-    if (*val != NUL && STRICMP(name, "VIMRUNTIME") == 0)
-    {
-	char_u	*buf = concat_str(val, (char_u *)"/lang");
-
-	if (buf != NULL)
-	{
-	    bindtextdomain(VIMPACKAGE, (char *)buf);
-	    vim_free(buf);
-	}
-    }
-#endif
+//kgtest#ifdef HAVE_SETENV
+//kgtest    mch_setenv((char *)name, (char *)val, 1);
+//kgtest#else
+//kgtest    char_u	*envbuf;
+//kgtest
+//kgtest    /*
+//kgtest     * Putenv does not copy the string, it has to remain
+//kgtest     * valid.  The allocated memory will never be freed.
+//kgtest     */
+//kgtest    envbuf = alloc((unsigned)(STRLEN(name) + STRLEN(val) + 2));
+//kgtest    if (envbuf != NULL)
+//kgtest    {
+//kgtest	sprintf((char *)envbuf, "%s=%s", name, val);
+//kgtest	putenv((char *)envbuf);
+//kgtest    }
+//kgtest#endif
+//kgtest#ifdef FEAT_GETTEXT
+//kgtest    /*
+//kgtest     * When setting $VIMRUNTIME adjust the directory to find message
+//kgtest     * translations to $VIMRUNTIME/lang.
+//kgtest     */
+//kgtest    if (*val != NUL && STRICMP(name, "VIMRUNTIME") == 0)
+//kgtest    {
+//kgtest	char_u	*buf = concat_str(val, (char_u *)"/lang");
+//kgtest
+//kgtest	if (buf != NULL)
+//kgtest	{
+//kgtest	    bindtextdomain(VIMPACKAGE, (char *)buf);
+//kgtest	    vim_free(buf);
+//kgtest	}
+//kgtest    }
+//kgtest#endif
 }
 
 #if defined(FEAT_CMDL_COMPL) || defined(PROTO)

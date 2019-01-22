@@ -3661,7 +3661,7 @@ f_feedkeys(typval_T *argvars, typval_T *rettv UNUSED)
     static void
 f_filereadable(typval_T *argvars, typval_T *rettv)
 {
-    int		fd;
+    FILE*		fd;
     char_u	*p;
     int		n;
 
@@ -3673,7 +3673,7 @@ f_filereadable(typval_T *argvars, typval_T *rettv)
 					      O_RDONLY | O_NONBLOCK, 0)) >= 0)
     {
 	n = TRUE;
-	close(fd);
+	fclose(fd);
     }
     else
 	n = FALSE;
@@ -11415,7 +11415,7 @@ item_compare(const void *s1, const void *s2)
     }
     else
     {
-	double n1, n2;
+	double n1 = 0, n2 = 0;
 	n1 = strtod((char *)p1, (char **)&p1);
 	n2 = strtod((char *)p2, (char **)&p2);
 	res = n1 == n2 ? 0 : n1 > n2 ? 1 : -1;

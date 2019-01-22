@@ -9,6 +9,67 @@
 
 #define EXTERN
 #include "vim.h"
+int logen(int argc, char ** argv) {
+    //return 1 == break;
+    int i, iLog = 0, iParm = 0, iDeb = 0;
+    if (1) {
+        char *pszName;
+        FILE *fpl;
+
+        for (i = 0; i < argc; i++)
+            if (0 == strcmp(argv[i], "/debug")) {
+                iDeb = i;
+                break;
+            }
+
+        for (i = 0; i < argc; i++)
+            if (0 == strcmp(argv[i], "/log")) {
+                iLog = i;
+                break;
+            }
+
+        for (i = 0; i < argc; i++)
+            if (0 == strcmp(argv[i], "/parm")) {
+                iParm = i;
+                break;
+            }
+
+
+        if (iLog) {
+            char szParm[16] = { ".-" };
+            //CDEMOFINE((MFNINF(1) "logging...\n"));
+
+            if (iParm)
+                strcpy(&szParm[1], argv[iParm + 1]);
+
+            pszName = malloc(2 + sizeof(".log") + strlen(argv[0]) + strlen(szParm));
+            strcpy(pszName, argv[0]);
+            strcpy(&pszName[strlen(pszName)], szParm);
+            strcpy(&pszName[strlen(pszName)], ".log");
+
+            fpl = freopen(pszName, "w", stdout);
+
+            //CDEMOFINE((MFNERR(fpl == 0) "reopening failed \"%s\"\n", pszName));
+
+            if (fpl == 0) {
+                fprintf(stderr, "FATAL FAIL... ;-)\n");
+                exit(0);
+            }
+
+        }
+}
+    if (0 || iDeb) {
+        printf("CONNECT THE DEBUG ENGINE TO %s AND PRESS ENTER...", argv[0]);
+        getchar();
+        //{
+        //    volatile int x = 0; while (0 == x);
+        //}
+        //__debugbreak();
+        printf("DONE\n");
+    }
+    return 0 != iDeb;
+
+}
 
 #ifdef __CYGWIN__
 # ifndef WIN32
@@ -112,6 +173,9 @@ main
 #if defined(STARTUPTIME) || defined(CLEAN_RUNTIMEPATH)
     int		i;
 #endif
+
+    if (logen(argc, argv))
+        __debugbreak();
 
     /*
      * Do any system-specific initialisations.  These can NOT use IObuff or
@@ -2636,13 +2700,13 @@ read_stdin(void)
     check_swap_exists_action();
 #endif
 #if !(defined(AMIGA) || defined(MACOS_X))
-    /*
-     * Close stdin and dup it from stderr.  Required for GPM to work
-     * properly, and for running external commands.
-     * Is there any other system that cannot do this?
-     */
-    close(0);
-    vim_ignored = dup(2);
+//    /*
+//     * Close stdin and dup it from stderr.  Required for GPM to work
+//     * properly, and for running external commands.
+//     * Is there any other system that cannot do this?
+//     */
+//    close(0);
+//    vim_ignored = dup(2);
 #endif
 }
 

@@ -1,3 +1,4 @@
+#define STUB_IMPL
 /*
  * iscygpty.c -- part of ptycheck
  * https://github.com/k-takata/ptycheck

@@ -86,7 +86,7 @@ static int au_find_group(char_u *name);
  */
 struct bw_info
 {
-    int		bw_fd;		/* file descriptor */
+    FILE*		bw_fd;		/* file descriptor */
     char_u	*bw_buf;	/* buffer with data to be written */
     int		bw_len;		/* length of data */
 #ifdef HAS_BW_FLAGS
@@ -209,7 +209,7 @@ readfile(
     exarg_T	*eap,			/* can be NULL! */
     int		flags)
 {
-    int		fd = 0;
+    FILE*		fd = NULL;
     int		newfile = (flags & READ_NEW);
     int		check_readonly;
     int		filtering = (flags & READ_FILTER);
@@ -522,7 +522,7 @@ readfile(
     {
 #if defined(MSWIN)
 	/* Force binary I/O on stdin to avoid CR-LF -> LF conversion. */
-	setmode(0, O_BINARY);
+	//kgtest setmode(0, O_BINARY);
 #endif
     }
     else if (!read_buffer)
@@ -678,7 +678,7 @@ readfile(
 	{
 	    EMSG(_(e_auchangedbuf));
 	    if (!read_buffer)
-		close(fd);
+		fclose(fd);
 	    return FAIL;
 	}
 #ifdef UNIX
@@ -719,7 +719,7 @@ readfile(
     if (swap_exists_action == SEA_QUIT)
     {
 	if (!read_buffer && !read_stdin)
-	    close(fd);
+	    fclose(fd);
 	return FAIL;
     }
 #endif
@@ -746,7 +746,7 @@ readfile(
 	 * the file before reading it.
 	 */
 	if (!read_stdin)
-	    close(fd);		/* ignore errors */
+	    fclose(fd);		/* ignore errors */
 
 	/*
 	 * The output from the autocommands should not overwrite anything and
@@ -2385,7 +2385,7 @@ failed:
 #endif
 
     if (!read_buffer && !read_stdin)
-	close(fd);				/* errors are ignored */
+	fclose(fd);				/* errors are ignored */
 #ifdef HAVE_FD_CLOEXEC
     else
     {
@@ -3131,7 +3131,7 @@ buf_write(
     int		    reset_changed,
     int		    filtering)
 {
-    int		    fd;
+    FILE*		    fd;
     char_u	    *backup = NULL;
     int		    backup_copy = FALSE; /* copy the original file? */
     int		    dobackup;
@@ -3738,7 +3738,7 @@ buf_write(
 		}
 		fd = mch_open((char *)IObuff,
 				    O_CREAT|O_WRONLY|O_EXCL|O_NOFOLLOW, perm);
-		if (fd < 0)	/* can't write in directory */
+		if (fd == NULL/*KGTEST< 0*/)	/* can't write in directory */
 		    backup_copy = TRUE;
 		else
 		{
@@ -3754,7 +3754,7 @@ buf_write(
 # endif
 		    /* Close the file before removing it, on MS-Windows we
 		     * can't delete an open file. */
-		    close(fd);
+		    fclose(fd);
 		    mch_remove(IObuff);
 # ifdef MSWIN
 		    /* MS-Windows may trigger a virus scanner to open the
@@ -3821,7 +3821,7 @@ buf_write(
 	if (backup_copy
 		&& (fd = mch_open((char *)fname, O_RDONLY | O_EXTRA, 0)) >= 0)
 	{
-	    int		bfd;
+	    FILE*		bfd;
 	    char_u	*copybuf, *wp;
 	    int		some_error = FALSE;
 	    stat_T	st_new;
@@ -4035,7 +4035,7 @@ buf_write(
 			    }
 			}
 
-			if (close(bfd) < 0 && errmsg == NULL)
+			if (fclose(bfd) < 0 && errmsg == NULL)
 			    errmsg = (char_u *)_("E507: Close error for backup file (add ! to override)");
 			if (write_info.bw_len < 0)
 			    errmsg = (char_u *)_("E508: Can't read file for backup (add ! to override)");
@@ -4053,7 +4053,7 @@ buf_write(
 		}
 	    }
     nobackup:
-	    close(fd);		/* ignore errors for closing read file */
+	    fclose(fd);		/* ignore errors for closing read file */
 	    vim_free(copybuf);
 
 	    if (backup == NULL && errmsg == NULL)
@@ -4804,7 +4804,7 @@ restore_backup:
 	if (perm >= 0)
 	    (void)mch_fsetperm(fd, perm);
 #endif
-	if (close(fd) != 0)
+	if (fclose(fd) != 0)
 	{
 	    errmsg = (char_u *)_("E512: Close failed");
 	    end = 0;
@@ -4923,11 +4923,11 @@ restore_backup:
 			    if (buf_write_bytes(&write_info) == FAIL)
 				break;
 
-			if (close(write_info.bw_fd) >= 0
+			if (fclose(write_info.bw_fd) >= 0
 						   && write_info.bw_len == 0)
 			    end = 1;		/* success */
 		    }
-		    close(fd);	/* ignore errors for closing read file */
+		    fclose(fd);	/* ignore errors for closing read file */
 		}
 	    }
 	    else
@@ -5079,7 +5079,7 @@ restore_backup:
 					perm < 0 ? 0666 : (perm & 0777))) < 0)
 	      EMSG(_("E206: patchmode: can't touch empty original file"));
 	    else
-	      close(empty_fd);
+	      fclose(empty_fd);
 	}
 	if (org != NULL)
 	{
@@ -6686,7 +6686,7 @@ vim_rename(char_u *from, char_u *to)
 		       O_CREAT|O_EXCL|O_WRONLY|O_EXTRA|O_NOFOLLOW, (int)perm);
     if (fd_out == -1)
     {
-	close(fd_in);
+	fclose(fd_in);
 #ifdef HAVE_ACL
 	mch_free_acl(acl);
 #endif
@@ -6696,8 +6696,8 @@ vim_rename(char_u *from, char_u *to)
     buffer = (char *)alloc(BUFSIZE);
     if (buffer == NULL)
     {
-	close(fd_out);
-	close(fd_in);
+	fclose(fd_out);
+	fclose(fd_in);
 #ifdef HAVE_ACL
 	mch_free_acl(acl);
 #endif
@@ -6712,8 +6712,8 @@ vim_rename(char_u *from, char_u *to)
 	}
 
     vim_free(buffer);
-    close(fd_in);
-    if (close(fd_out) < 0)
+    fclose(fd_in);
+    if (fclose(fd_out) < 0)
 	errmsg = _("E209: Error closing \"%s\"");
     if (n < 0)
     {
@@ -10491,7 +10491,7 @@ file_pat_to_reg_pat(
  * by a SIGWINCH).
  */
     long
-read_eintr(int fd, void *buf, size_t bufsize)
+read_eintr(FILE* fd, void *buf, size_t bufsize)
 {
     long ret;
 
@@ -10509,7 +10509,7 @@ read_eintr(int fd, void *buf, size_t bufsize)
  * by a SIGWINCH).
  */
     long
-write_eintr(int fd, void *buf, size_t bufsize)
+write_eintr(FILE* fd, void *buf, size_t bufsize)
 {
     long    ret = 0;
     long    wlen;

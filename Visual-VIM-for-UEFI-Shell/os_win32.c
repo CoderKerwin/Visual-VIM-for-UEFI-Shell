@@ -1,3 +1,6 @@
+int isatty(int fd) {
+    return 1;
+}
 /* vi:set ts=8 sts=4 sw=4 noet:
  *
  * VIM - Vi IMproved	by Bram Moolenaar
@@ -2617,7 +2620,7 @@ mch_init(void)
      * for the timestamp test to work on removed floppies. */
     SetErrorMode(SEM_FAILCRITICALERRORS);
 
-    _fmode = O_BINARY;		/* we do our own CR-LF translation */
+    //kgtest_fmode = O_BINARY;		/* we do our own CR-LF translation */
     out_flush();
 
     /* Obtain handles for the standard Console I/O devices */
@@ -2997,9 +3000,9 @@ fname_case(
 	    /* Only use the match when it's the same name (ignoring case) or
 	     * expansion is allowed and there is a match with the short name
 	     * and there is enough room. */
-	    if (_stricoll(porigPrev, fb.cFileName) == 0
+	    if (_stricmp(porigPrev, fb.cFileName) == 0
 		    || (len > 0
-			&& (_stricoll(porigPrev, fb.cAlternateFileName) == 0
+			&& (_stricmp(porigPrev, fb.cAlternateFileName) == 0
 			    && (int)(ptruePrev - szTrueName)
 					   + (int)strlen(fb.cFileName) < len)))
 	    {
@@ -3010,9 +3013,9 @@ fname_case(
 		while (FindNextFile(hFind, &fb))
 		{
 		    if (*fb.cAlternateFileName != NUL
-			    && (strcoll(porigPrev, fb.cFileName) == 0
+			    && (strcmp/*kgtest*/(porigPrev, fb.cFileName) == 0
 				|| (len > 0
-				    && (_stricoll(porigPrev,
+				    &&  (_stricmp(porigPrev,
 						   fb.cAlternateFileName) == 0
 				    && (int)(ptruePrev - szTrueName)
 					 + (int)strlen(fb.cFileName) < len))))
@@ -3202,29 +3205,29 @@ mch_getperm(char_u *name)
     int
 mch_setperm(char_u *name, long perm)
 {
-    long	n = -1;
-
-#ifdef FEAT_MBYTE
-    if (enc_codepage >= 0 && (int)GetACP() != enc_codepage)
-    {
-	WCHAR *p = enc_to_utf16(name, NULL);
-
-	if (p != NULL)
-	{
-	    n = _wchmod(p, perm);
-	    vim_free(p);
-	    if (n == -1)
-		return FAIL;
-	}
-    }
-    if (n == -1)
-#endif
-	n = _chmod((const char *)name, perm);
-    if (n == -1)
-	return FAIL;
-
-    win32_set_archive(name);
-
+//kgtest    long	n = -1;
+//kgtest
+//kgtest#ifdef FEAT_MBYTE
+//kgtest    if (enc_codepage >= 0 && (int)GetACP() != enc_codepage)
+//kgtest    {
+//kgtest	WCHAR *p = enc_to_utf16(name, NULL);
+//kgtest
+//kgtest	if (p != NULL)
+//kgtest	{
+//kgtest	    n = _wchmod(p, perm);
+//kgtest	    vim_free(p);
+//kgtest	    if (n == -1)
+//kgtest		return FAIL;
+//kgtest	}
+//kgtest    }
+//kgtest    if (n == -1)
+//kgtest#endif
+//kgtest	n = _chmod((const char *)name, perm);
+//kgtest    if (n == -1)
+//kgtest	return FAIL;
+//kgtest
+//kgtest    win32_set_archive(name);
+//kgtest
     return OK;
 }
 
@@ -3303,7 +3306,7 @@ mch_mkdir(char_u *name)
 	return retval;
     }
 #endif
-    return _mkdir((const char *)name);
+    return -1;//kgtest_mkdir((const char *)name);
 }
 
 /*
@@ -3327,7 +3330,7 @@ mch_rmdir(char_u *name)
 	return retval;
     }
 #endif
-    return _rmdir((const char *)name);
+    return -1;//kgtest_rmdir((const char *)name);
 }
 
 /*
@@ -3575,7 +3578,7 @@ mch_can_exe(char_u *name, char_u **path, int use_path)
 
 	if (tmp != NULL)
 	    *tmp = NUL;
-	if (_stricoll((char *)name + len - STRLEN(p), (char *)p) == 0
+	if (_stricmp((char *)name + len - STRLEN(p), (char *)p) == 0
 			    && executable_exists((char *)name, path, use_path))
 	{
 	    vim_free(saved);
@@ -6395,11 +6398,11 @@ mch_write(
 {
     s[len] = NUL;
 
-    if (!term_console)
-    {
-	write(1, s, (unsigned)len);
-	return;
-    }
+//kgtest    if (!term_console)
+//kgtest    {
+//kgtest	write(1, s, (unsigned)len);
+//kgtest	return;
+//kgtest    }
 
     /* translate ESC | sequences into faked bios calls */
     while (len--)
@@ -7652,40 +7655,40 @@ fix_arg_enc(void)
     int
 mch_setenv(char *var, char *value, int x)
 {
-    char_u	*envbuf;
-
-    envbuf = alloc((unsigned)(STRLEN(var) + STRLEN(value) + 2));
-    if (envbuf == NULL)
-	return -1;
-
-    sprintf((char *)envbuf, "%s=%s", var, value);
-
-#ifdef FEAT_MBYTE
-    if (enc_codepage >= 0 && (int)GetACP() != enc_codepage)
-    {
-	WCHAR	    *p = enc_to_utf16(envbuf, NULL);
-
-	vim_free(envbuf);
-	if (p == NULL)
-	    return -1;
-	_wputenv(p);
-# ifdef libintl_wputenv
-	libintl_wputenv(p);
-# endif
-	/* Unlike Un*x systems, we can free the string for _wputenv(). */
-	vim_free(p);
-    }
-    else
-#endif
-    {
-	_putenv((char *)envbuf);
-#ifdef libintl_putenv
-	libintl_putenv((char *)envbuf);
-#endif
-	/* Unlike Un*x systems, we can free the string for _putenv(). */
-	vim_free(envbuf);
-    }
-
+//kgtest    char_u	*envbuf;
+//kgtest
+//kgtest    envbuf = alloc((unsigned)(STRLEN(var) + STRLEN(value) + 2));
+//kgtest    if (envbuf == NULL)
+//kgtest	return -1;
+//kgtest
+//kgtest    sprintf((char *)envbuf, "%s=%s", var, value);
+//kgtest
+//kgtest#ifdef FEAT_MBYTE
+//kgtest    if (enc_codepage >= 0 && (int)GetACP() != enc_codepage)
+//kgtest    {
+//kgtest	WCHAR	    *p = enc_to_utf16(envbuf, NULL);
+//kgtest
+//kgtest	vim_free(envbuf);
+//kgtest	if (p == NULL)
+//kgtest	    return -1;
+//kgtest	_wputenv(p);
+//kgtest# ifdef libintl_wputenv
+//kgtest	libintl_wputenv(p);
+//kgtest# endif
+//kgtest	/* Unlike Un*x systems, we can free the string for _wputenv(). */
+//kgtest	vim_free(p);
+//kgtest    }
+//kgtest    else
+//kgtest#endif
+//kgtest    {
+//kgtest	_putenv((char *)envbuf);
+//kgtest#ifdef libintl_putenv
+//kgtest	libintl_putenv((char *)envbuf);
+//kgtest#endif
+//kgtest	/* Unlike Un*x systems, we can free the string for _putenv(). */
+//kgtest	vim_free(envbuf);
+//kgtest    }
+//kgtest
     return 0;
 }
 

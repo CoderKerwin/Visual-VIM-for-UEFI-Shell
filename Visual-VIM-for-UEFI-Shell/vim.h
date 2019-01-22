@@ -390,9 +390,9 @@ typedef __int64 off_T;
 #  define vim_fseek fseeko64
 #  define vim_ftell ftello64
 # else
-#  define vim_lseek _lseeki64
-#  define vim_fseek _fseeki64
-#  define vim_ftell _ftelli64
+#  define vim_lseek fseek
+#  define vim_fseek fseek
+#  define vim_ftell ftell
 # endif
 #else
 # ifdef PROTO
@@ -1745,8 +1745,8 @@ void *vim_memset(void *, int, size_t);
 #ifdef MSWIN
 /* On MS-Windows the third argument isn't size_t.  This matters for Win64,
  * where sizeof(size_t)==8, not 4 */
-# define vim_read(fd, buf, count)   read((fd), (char *)(buf), (unsigned int)(count))
-# define vim_write(fd, buf, count)  write((fd), (char *)(buf), (unsigned int)(count))
+# define vim_read(fd, buf, count)   fread(buf,1,count,fd)/*read((fd), (char *)(buf), (unsigned int)(count))*/
+# define vim_write(fd, buf, count)  fwrite(buf,1,count,fd)/*write((fd), (char *)(buf), (unsigned int)(count))*/
 #else
 # define vim_read(fd, buf, count)   read((fd), (char *)(buf), (size_t) (count))
 # define vim_write(fd, buf, count)  write((fd), (char *)(buf), (size_t) (count))
@@ -2081,7 +2081,7 @@ typedef int VimClipboard;	/* This is required for the prototypes. */
 
 /* Use 64-bit stat structure if available. */
 #if (defined(_MSC_VER) && (_MSC_VER >= 1300)) || defined(__MINGW32__)
-# define HAVE_STAT64
+//kgtemp # define HAVE_STAT64
 typedef struct _stat64 stat_T;
 #else
 typedef struct stat stat_T;
@@ -2166,7 +2166,7 @@ typedef enum {
 /* This must come after including proto.h.
  * For VMS this is defined in macros.h. */
 #if !(defined(FEAT_MBYTE) && defined(WIN3264)) && !defined(VMS)
-# define mch_open(n, m, p)	open((n), (m), (p))
+# define mch_open(n, m, p)	fopen((n), (p))/*open((n), (m), (p))*/
 # define mch_fopen(n, p)	fopen((n), (p))
 #endif
 

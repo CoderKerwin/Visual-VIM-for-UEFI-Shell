@@ -5,6 +5,10 @@ the translation of the VIM/VI source code to get an UEFI shell
 .EFI executable.
 
 # Revision history
+### 20190122\1
+* hacked, buildable version for windows with debug.torito
+* but still calls to windows DLLs
+* the EXE breaks execution early
 ### 20181204\1
 * VIM porting stopped due to usage of too many non-Standard C functions
   that are not available in the Torito C Library, like:
@@ -21,7 +25,7 @@ the translation of the VIM/VI source code to get an UEFI shell
     - isatty
     - \_wchdir
     - \_chdrive
-    - \chdir
+    - \_chdir
     - \_wfullpath
     - \_fullpath
     - \_resetstkoflw

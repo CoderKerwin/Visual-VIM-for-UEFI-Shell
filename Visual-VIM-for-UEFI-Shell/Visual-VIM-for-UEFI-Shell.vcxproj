@@ -299,6 +299,7 @@
       <LinkStatus>false</LinkStatus>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <EntryPointSymbol>_MainEntryPointWinNT</EntryPointSymbol>
+      <GenerateMapFile>true</GenerateMapFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release.msft|x64'">

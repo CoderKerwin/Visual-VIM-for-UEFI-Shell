@@ -31,12 +31,12 @@
 # define HAVE_STRING_H
 #endif
 #ifndef HAVE_MATH_H
-# define HAVE_MATH_H
+//kgtest# define HAVE_MATH_H
 #endif
 #define HAVE_STRCSPN
 #ifndef __GNUC__
-#define HAVE_STRICMP
-#define HAVE_STRNICMP
+//kgtest#define HAVE_STRICMP
+//kgtest#define HAVE_STRNICMP
 #endif
 #ifndef HAVE_STRFTIME
 # define HAVE_STRFTIME		/* guessed */
@@ -203,7 +203,7 @@ Trace(char *pszFormat, ...);
     ASSERT(((p) == NULL)  ||  IsValidAddress((p), sizeof(type), FALSE))
 
 #ifndef HAVE_SETENV
-# define HAVE_SETENV
+//kgtest # define HAVE_SETENV
 #endif
 #define mch_getenv(x) (char_u *)getenv((char *)(x))
 #ifdef __BORLANDC__

@@ -607,7 +607,8 @@ struct memfile
 {
     char_u	*mf_fname;		/* name of the file */
     char_u	*mf_ffname;		/* idem, full path */
-    int		mf_fd;			/* file descriptor */
+//kgtest    int		mf_fd;			/* file descriptor */
+    FILE*		mf_fd;			/* kgtest */
     bhdr_T	*mf_free_first;		/* first block_hdr in free list */
     bhdr_T	*mf_used_first;		/* mru block_hdr in used list */
     bhdr_T	*mf_used_last;		/* lru block_hdr in used list */

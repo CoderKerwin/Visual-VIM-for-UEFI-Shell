@@ -3033,7 +3033,7 @@ inchar(
 	parse_queued_messages();
 #endif
 
-	if (got_int || (script_char = getc(scriptin[curscript])) < 0)
+	if (got_int || (script_char = fgetc(scriptin[curscript])) < 0)
 	{
 	    /* Reached EOF.
 	     * Careful: closescript() frees typebuf.tb_buf[] and buf[] may

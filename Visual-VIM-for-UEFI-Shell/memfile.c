@@ -137,14 +137,14 @@ mf_open(char_u *fname, int flags)
     {
 	mfp->mf_fname = NULL;
 	mfp->mf_ffname = NULL;
-	mfp->mf_fd = -1;
+	mfp->mf_fd = NULL;//kgtest-1;
     }
     else
     {
 	mf_do_open(mfp, fname, flags);	/* try to open the file */
 
 	/* if the file cannot be opened, return here */
-	if (mfp->mf_fd < 0)
+	if (mfp->mf_fd == NULL /*kgtest< 0*/)
 	{
 	    vim_free(mfp);
 	    return NULL;
@@ -178,7 +178,7 @@ mf_open(char_u *fname, int flags)
 	mfp->mf_page_size = stf.F_BSIZE;
 #endif
 
-    if (mfp->mf_fd < 0 || (flags & (O_TRUNC|O_EXCL))
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/ || (flags & (O_TRUNC|O_EXCL))
 		  || (size = vim_lseek(mfp->mf_fd, (off_T)0L, SEEK_END)) <= 0)
 	mfp->mf_blocknr_max = 0;	/* no file or empty file */
     else
@@ -225,7 +225,7 @@ mf_open_file(memfile_T *mfp, char_u *fname)
 {
     mf_do_open(mfp, fname, O_RDWR|O_CREAT|O_EXCL); /* try to open the file */
 
-    if (mfp->mf_fd < 0)
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/)
 	return FAIL;
 
     mfp->mf_dirty = TRUE;
@@ -242,9 +242,9 @@ mf_close(memfile_T *mfp, int del_file)
 
     if (mfp == NULL)		    /* safety check */
 	return;
-    if (mfp->mf_fd >= 0)
+    if (mfp->mf_fd != NULL /*KGTEST >= 0*/)
     {
-	if (close(mfp->mf_fd) < 0)
+	if (fclose(mfp->mf_fd) != 0 /*KGTEST < 0*/)
 	    EMSG(_(e_swapclose));
     }
     if (del_file && mfp->mf_fname != NULL)
@@ -277,7 +277,7 @@ mf_close_file(
     linenr_T	lnum;
 
     mfp = buf->b_ml.ml_mfp;
-    if (mfp == NULL || mfp->mf_fd < 0)		/* nothing to close */
+    if (mfp == NULL || mfp->mf_fd == NULL /*KGTEST < 0*/)		/* nothing to close */
 	return;
 
     if (getlines)
@@ -290,9 +290,9 @@ mf_close_file(
 	/* TODO: should check if all blocks are really in core */
     }
 
-    if (close(mfp->mf_fd) < 0)			/* close the file */
+    if (fclose(mfp->mf_fd) != 0 /*KGTEST < 0*/)			/* close the file */
 	EMSG(_(e_swapclose));
-    mfp->mf_fd = -1;
+    mfp->mf_fd = NULL /*kgtest -1*/;
 
     if (mfp->mf_fname != NULL)
     {
@@ -541,7 +541,7 @@ mf_sync(memfile_T *mfp, int flags)
     bhdr_T	*hp;
     int		got_int_save = got_int;
 
-    if (mfp->mf_fd < 0)	    /* there is no file, nothing to do */
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/)	    /* there is no file, nothing to do */
     {
 	mfp->mf_dirty = FALSE;
 	return FAIL;
@@ -622,7 +622,8 @@ mf_sync(memfile_T *mfp, int flags)
 	}
 #endif
 #ifdef WIN32
-	if (_commit(mfp->mf_fd))
+	//kgtestif (_commit(mfp->mf_fd))
+    if(EOF == fflush(mfp->mf_fd))
 	    status = FAIL;
 #endif
 #ifdef AMIGA
@@ -784,7 +785,7 @@ mf_release(memfile_T *mfp, int page_count)
      * Try to create a swap file if the amount of memory used is getting too
      * high.
      */
-    if (mfp->mf_fd < 0 && need_release && p_uc)
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/ && need_release && p_uc)
     {
 	/* find for which buffer this memfile is */
 	FOR_ALL_BUFFERS(buf)
@@ -802,7 +803,7 @@ mf_release(memfile_T *mfp, int page_count)
      *	  and
      *	total memory used is not up to 'maxmemtot'
      */
-    if (mfp->mf_fd < 0 || !need_release)
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/ || !need_release)
 	return NULL;
 
     for (hp = mfp->mf_used_last; hp != NULL; hp = hp->bh_prev)
@@ -858,11 +859,11 @@ mf_release_all(void)
 	if (mfp != NULL)
 	{
 	    /* If no swap file yet, may open one */
-	    if (mfp->mf_fd < 0 && buf->b_may_swap)
+	    if (mfp->mf_fd == NULL /*KGTEST < 0*/ && buf->b_may_swap)
 		ml_open_file(buf);
 
 	    /* only if there is a swapfile */
-	    if (mfp->mf_fd >= 0)
+	    if (mfp->mf_fd != NULL /*KGTEST >= 0*/)
 	    {
 		for (hp = mfp->mf_used_last; hp != NULL; )
 		{
@@ -952,7 +953,7 @@ mf_read(memfile_T *mfp, bhdr_T *hp)
     unsigned	page_size;
     unsigned	size;
 
-    if (mfp->mf_fd < 0)	    /* there is no file, can't read */
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/)	    /* there is no file, can't read */
 	return FAIL;
 
     page_size = mfp->mf_page_size;
@@ -994,7 +995,7 @@ mf_write(memfile_T *mfp, bhdr_T *hp)
     unsigned	page_count; /* number of pages written */
     unsigned	size;	    /* number of bytes written */
 
-    if (mfp->mf_fd < 0)	    /* there is no file, can't write */
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/)	    /* there is no file, can't write */
 	return FAIL;
 
     if (hp->bh_bnum < 0)	/* must assign file block number */
@@ -1277,7 +1278,7 @@ mf_do_open(
     /*
      * If the file cannot be opened, use memory only
      */
-    if (mfp->mf_fd < 0)
+    if (mfp->mf_fd == NULL /*KGTEST < 0*/)
     {
 	VIM_CLEAR(mfp->mf_fname);
 	VIM_CLEAR(mfp->mf_ffname);
